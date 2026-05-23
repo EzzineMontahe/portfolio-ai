@@ -28,8 +28,16 @@ const PROJECTS = [
     metric: "100+ contacts automated",
   },
   {
+    title: "Telegram AI Support Bot",
+    desc: "Production-ready AI support bot deployed on DigitalOcean. Features: sub-second responses, FAQ matching, conversation memory, smart escalation, Google Sheets logging. Cloud-hosted with ngrok + PM2.",
+    tags: ["n8n", "Groq API", "Telegram", "DigitalOcean"],
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/telegram-ai-support-bot",
+    metric: "Cloud deployed",
+  },
+  {
     title: "Home AI Assistant",
-    desc: "Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support. Fully multilingual: EN, FR, AR.",
+    desc: "Personal Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support (/study /translate /cook /clear). Fully multilingual: EN, FR, AR.",
     tags: ["n8n", "Groq API", "Telegram"],
     badge: "AI Automation",
     link: "https://github.com/EzzineMontahe/home-ai-assistant",
@@ -374,7 +382,7 @@ export default function Home() {
           background:#111; border:1px solid rgba(255,255,255,0.1);
           border-radius:10px; padding:0.5rem;
           display:flex; flex-direction:column; gap:0.25rem;
-          min-width:240px; z-index:100;
+          min-width:240px; z-index:9999;
           box-shadow:0 20px 60px rgba(0,0,0,0.6);
         }
 
@@ -641,7 +649,7 @@ export default function Home() {
             borderTop: "1px solid var(--border)", paddingTop: "2.5rem",
             flexWrap: "wrap"
           }}>
-            {[["5+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
+            {[["6+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
               <div key={label} style={{ textAlign: "center" }}>
                 <div className="chakra" style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>{val}</div>
                 <div className="chakra" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-muted)" }}>{label}</div>
