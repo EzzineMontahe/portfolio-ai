@@ -1,379 +1,768 @@
 "use client";
+
+import { useEffect, useRef, useState } from "react";
 import ChatWidget from "./components/ChatWidget";
 
+const SKILLS = [
+  { name: "n8n", icon: "https://cdn.simpleicons.org/n8n/EA4B71" },
+  { name: "OpenAI", icon: "https://cdn.simpleicons.org/openai/ffffff" },
+  { name: "Linux", icon: "https://cdn.simpleicons.org/linux/ffffff" },
+  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E" },
+  { name: "Java", icon: "https://cdn.simpleicons.org/openjdk/ffffff" },
+  { name: "MySQL", icon: "https://cdn.simpleicons.org/mysql/4479A1" },
+  { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032" },
+  { name: "Telegram", icon: "https://cdn.simpleicons.org/telegram/26A5E4" },
+  { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
+  { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB" },
+  { name: "Groq", icon: "https://cdn.simpleicons.org/groq/ffffff" },
+  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/ffffff" },
+];
+
+const PROJECTS = [
+  {
+    title: "B2B Email Automation",
+    desc: "AI-powered prospecting system — automated personalized outreach using n8n + Groq + Brevo. Google Sheets as CRM, 100+ contacts, dynamic AI-generated emails in French.",
+    tags: ["n8n", "Groq API", "Brevo"],
+    badge: "Client Work",
+    link: "#",
+    metric: "100+ contacts automated",
+  },
+  {
+    title: "Home AI Assistant",
+    desc: "Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support. Fully multilingual: EN, FR, AR.",
+    tags: ["n8n", "Groq API", "Telegram"],
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/home-ai-assistant",
+    metric: "3 languages supported",
+  },
+  {
+    title: "Portfolio AI",
+    desc: "This site — Next.js portfolio with an embedded AI assistant that answers questions about my work and handles inquiries in real time.",
+    tags: ["Next.js", "Groq API", "AI"],
+    badge: "AI + Web",
+    link: "#",
+    metric: "Live AI chat",
+  },
+  {
+    title: "Student Grade Tracker",
+    desc: "Full-stack CRUD web app with student dashboard, grade calculations, and averages. Spring Boot + Thymeleaf + MySQL.",
+    tags: ["Spring Boot", "MySQL", "Java"],
+    badge: "Full Stack",
+    link: "https://github.com/EzzineMontahe/student-grade-tracker",
+    metric: "Full-stack app",
+  },
+  {
+    title: "Linux Security Lab",
+    desc: "Ubuntu server hardening with SSH configuration, firewall rules, and automated Trivy vulnerability scanning with Jira reporting.",
+    tags: ["Linux", "Bash", "Security"],
+    badge: "Security",
+    link: "https://github.com/EzzineMontahe",
+    metric: "Production hardened",
+  },
+];
+
 export default function Home() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [contactOpen, setContactOpen] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouse = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouse);
+    return () => window.removeEventListener("mousemove", handleMouse);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
 
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
         :root {
-          --dark: #0F0F0E;
-          --dark-2: #1A1A18;
-          --dark-3: #252522;
-          --cream: #F4F0E6;
-          --beige: #EAE4D6;
-          --beige-2: #DDD7C8;
+          --dark: #080808;
+          --dark-2: #0f0f0f;
+          --dark-3: #161616;
+          --dark-4: #1e1e1e;
           --sage: #6B8F6E;
-          --sage-light: #9DB89F;
-          --rose: #B8786A;
-          --text-dark: #0F0F0E;
-          --text-mid: #4A4540;
-          --text-muted: #8A8278;
+          --sage-light: #8fb892;
+          --sage-glow: rgba(107,143,110,0.15);
+          --cream: #e8e0d0;
+          --text: #d4cfc7;
+          --text-muted: #6b6560;
+          --border: rgba(255,255,255,0.06);
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-          background: var(--cream);
-          color: var(--text-dark);
+          background: var(--dark);
+          color: var(--text);
           font-family: 'DM Sans', sans-serif;
           font-weight: 300;
+          overflow-x: hidden;
+          cursor: none;
         }
 
         .chakra { font-family: 'Chakra Petch', sans-serif; }
 
+        /* CUSTOM CURSOR */
+        .cursor-dot {
+          width: 6px; height: 6px;
+          background: var(--sage);
+          border-radius: 50%;
+          position: fixed;
+          pointer-events: none;
+          z-index: 9999;
+          transform: translate(-50%, -50%);
+          transition: transform 0.1s ease;
+        }
+
+        .cursor-ring {
+          width: 32px; height: 32px;
+          border: 1px solid rgba(107,143,110,0.5);
+          border-radius: 50%;
+          position: fixed;
+          pointer-events: none;
+          z-index: 9998;
+          transform: translate(-50%, -50%);
+          transition: all 0.15s ease;
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ANIMATIONS */
         @keyframes fadeUp {
-          from { opacity:0; transform:translateY(28px); }
+          from { opacity:0; transform:translateY(24px); }
           to { opacity:1; transform:translateY(0); }
+        }
+        @keyframes blink {
+          0%,100% { opacity:1; } 50% { opacity:0; }
         }
         @keyframes marquee {
           from { transform:translateX(0); }
           to { transform:translateX(-50%); }
         }
-        @keyframes blink {
-          0%,100% { opacity:1; } 50% { opacity:0; }
+        @keyframes float {
+          0%,100% { transform:translateY(0); }
+          50% { transform:translateY(-8px); }
         }
-        @keyframes lineGrow {
-          from { width:0; } to { width:100%; }
+        @keyframes pulse-glow {
+          0%,100% { box-shadow: 0 0 20px rgba(107,143,110,0.2); }
+          50% { box-shadow: 0 0 40px rgba(107,143,110,0.4); }
+        }
+        @keyframes grid-fade {
+          from { opacity:0; } to { opacity:1; }
+        }
+        @keyframes scanline {
+          from { transform: translateY(-100%); }
+          to { transform: translateY(100vh); }
         }
 
-        .fade-up { animation: fadeUp 0.7s ease forwards; opacity:0; }
-        .d1{animation-delay:0.05s} .d2{animation-delay:0.2s}
-        .d3{animation-delay:0.35s} .d4{animation-delay:0.5s}
-        .d5{animation-delay:0.65s} .d6{animation-delay:0.8s}
+        .fade-up { animation: fadeUp 0.8s ease forwards; opacity:0; }
+        .d1{animation-delay:0.1s} .d2{animation-delay:0.25s}
+        .d3{animation-delay:0.4s} .d4{animation-delay:0.55s}
+        .d5{animation-delay:0.7s}
 
-        .cursor {
-          display:inline-block; width:4px; height:0.85em;
-          background:var(--sage); margin-left:6px;
+        .cursor-blink {
+          display:inline-block; width:3px; height:0.8em;
+          background:var(--sage); margin-left:4px;
           vertical-align:middle;
           animation: blink 1s step-end infinite;
         }
 
+        /* NAV */
+        nav {
+          position: fixed; top:0; left:0; right:0; z-index:100;
+          padding: 1.1rem 3rem;
+          display: flex; justify-content:space-between; align-items:center;
+          background: rgba(8,8,8,0.85);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:1rem; font-weight:700;
+          letter-spacing:0.12em; color:#fff;
+        }
+
+        .nav-links { display:flex; gap:2.5rem; align-items:center; }
+
         .nav-link {
-          color:rgba(255,255,255,0.55); text-decoration:none;
-          font-size:0.9rem; letter-spacing:0.05em;
-          font-family:'Chakra Petch',sans-serif; font-weight:500;
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.78rem; font-weight:500;
+          letter-spacing:0.08em; text-transform:uppercase;
+          color:var(--text-muted); text-decoration:none;
           transition:color 0.2s;
+          position:relative;
+        }
+        .nav-link::after {
+          content:''; position:absolute; bottom:-4px; left:0;
+          width:0; height:1px; background:var(--sage);
+          transition:width 0.3s ease;
         }
         .nav-link:hover { color:#fff; }
+        .nav-link:hover::after { width:100%; }
 
-        .btn-sage {
-          background:var(--sage); color:#fff;
-          padding:0.75rem 1.75rem; border-radius:6px;
-          font-size:0.85rem; font-weight:600;
+        .btn-hire {
           font-family:'Chakra Petch',sans-serif;
-          letter-spacing:0.06em; text-decoration:none;
-          transition:all 0.2s; display:inline-block;
-          text-transform:uppercase;
+          font-size:0.78rem; font-weight:600;
+          letter-spacing:0.1em; text-transform:uppercase;
+          color:#fff; text-decoration:none;
+          padding:0.6rem 1.4rem;
+          border:1px solid var(--sage);
+          border-radius:4px;
+          transition:all 0.3s ease;
+          position:relative; overflow:hidden;
         }
-        .btn-sage:hover { background:var(--sage-light); transform:translateY(-2px); }
-
-        .btn-ghost {
-          border:1.5px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.8);
-          padding:0.75rem 1.75rem; border-radius:6px;
-          font-size:0.85rem; font-family:'Chakra Petch',sans-serif;
-          letter-spacing:0.06em; text-decoration:none;
-          transition:all 0.2s; display:inline-block;
-          text-transform:uppercase;
+        .btn-hire::before {
+          content:''; position:absolute; inset:0;
+          background:var(--sage); transform:translateX(-100%);
+          transition:transform 0.3s ease;
         }
-        .btn-ghost:hover { border-color:var(--sage); color:var(--sage); }
+        .btn-hire:hover::before { transform:translateX(0); }
+        .btn-hire span { position:relative; z-index:1; }
 
-        .marquee-wrap { overflow:hidden; }
+        /* HERO */
+        .hero {
+          min-height:100vh;
+          display:flex; flex-direction:column; justify-content:center;
+          padding: 8rem 3rem 4rem;
+          position:relative; overflow:hidden;
+        }
+
+        .hero-grid {
+          position:absolute; inset:0;
+          background-image:
+            linear-gradient(rgba(107,143,110,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(107,143,110,0.04) 1px, transparent 1px);
+          background-size: 80px 80px;
+          animation: grid-fade 2s ease forwards;
+        }
+
+        .hero-glow {
+          position:absolute;
+          width:600px; height:600px;
+          background:radial-gradient(circle, rgba(107,143,110,0.08) 0%, transparent 70%);
+          border-radius:50%;
+          top:50%; left:50%;
+          transform:translate(-50%,-50%);
+          pointer-events:none;
+        }
+
+        .hero-scanline {
+          position:absolute; left:0; right:0;
+          height:1px;
+          background:linear-gradient(to right, transparent, rgba(107,143,110,0.3), transparent);
+          animation: scanline 8s linear infinite;
+          pointer-events:none;
+        }
+
+        .hero-inner {
+          max-width:1200px; margin:0 auto; width:100%;
+          position:relative; z-index:1;
+          display:flex; flex-direction:column; align-items:center;
+          text-align:center;
+        }
+
+        .hero-badge {
+          display:inline-flex; align-items:center; gap:0.6rem;
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.72rem; font-weight:600;
+          letter-spacing:0.2em; text-transform:uppercase;
+          color:var(--sage); margin-bottom:2rem;
+          padding:0.4rem 1rem;
+          border:1px solid rgba(107,143,110,0.3);
+          border-radius:100px;
+          background:rgba(107,143,110,0.05);
+        }
+
+        .hero-dot {
+          width:6px; height:6px; border-radius:50%;
+          background:var(--sage);
+          animation: pulse-glow 2s ease infinite;
+        }
+
+        .hero-title {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:clamp(3rem, 7.5vw, 8rem);
+          font-weight:700; line-height:1.0;
+          color:#fff; margin-bottom:1.5rem;
+          letter-spacing:-0.02em;
+          white-space:nowrap;
+        }
+
+        .hero-title .outline {
+          color:transparent;
+          -webkit-text-stroke:2px var(--sage);
+        }
+
+        .hero-sub {
+          font-size:clamp(1rem, 1.5vw, 1.2rem);
+          line-height:1.8; color:rgba(255,255,255,0.4);
+          max-width:560px; margin-bottom:3rem; font-weight:300;
+        }
+
+        .hero-buttons {
+          display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;
+          margin-bottom:4rem;
+        }
+
+        .btn-primary {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.8rem; font-weight:600;
+          letter-spacing:0.1em; text-transform:uppercase;
+          background:var(--sage); color:#fff;
+          padding:0.8rem 2rem; border-radius:4px;
+          border:none; cursor:pointer;
+          transition:all 0.3s ease;
+          position:relative; overflow:hidden;
+        }
+        .btn-primary:hover { background:var(--sage-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(107,143,110,0.3); }
+
+        .btn-secondary {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.8rem; font-weight:500;
+          letter-spacing:0.08em; text-transform:uppercase;
+          background:transparent; color:rgba(255,255,255,0.7);
+          padding:0.8rem 2rem; border-radius:4px;
+          border:1px solid rgba(255,255,255,0.15);
+          cursor:pointer; text-decoration:none;
+          transition:all 0.3s ease;
+        }
+        .btn-secondary:hover { border-color:var(--sage); color:#fff; }
+
+        /* CONTACT DROPDOWN */
+        .contact-menu {
+          position:absolute; top:calc(100% + 10px); left:50%;
+          transform:translateX(-50%);
+          background:#111; border:1px solid rgba(255,255,255,0.1);
+          border-radius:10px; padding:0.5rem;
+          display:flex; flex-direction:column; gap:0.25rem;
+          min-width:240px; z-index:100;
+          box-shadow:0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .contact-option {
+          display:flex; justify-content:space-between; align-items:center;
+          padding:0.8rem 1rem; border-radius:8px;
+          text-decoration:none; color:#fff;
+          transition:background 0.15s;
+        }
+        .contact-option:hover { background:rgba(107,143,110,0.1); }
+
+        /* MARQUEE */
+        .marquee-wrap { overflow:hidden; padding:1.5rem 0; }
         .marquee-track {
           display:flex; width:max-content;
-          animation: marquee 30s linear infinite;
+          animation:marquee 35s linear infinite;
+          gap:2.5rem;
         }
         .marquee-track:hover { animation-play-state:paused; }
-        .skill-tag {
-          font-family:'Chakra Petch',sans-serif; font-size:0.78rem;
-          font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-          color:var(--text-mid); padding:0.45rem 1.2rem;
-          border:1px solid var(--beige-2); border-radius:4px;
-          margin-right:0.75rem; white-space:nowrap; background:var(--beige);
+
+        .skill-logo {
+          display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+          opacity:0.5; transition:opacity 0.3s, transform 0.3s;
+          cursor:default;
+        }
+        .skill-logo:hover { opacity:1; transform:translateY(-4px); }
+        .skill-logo img { width:32px; height:32px; object-fit:contain; filter:brightness(0.9); }
+        .skill-logo span {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.6rem; font-weight:600;
+          letter-spacing:0.1em; text-transform:uppercase;
+          color:var(--text-muted);
+        }
+
+        /* SECTIONS */
+        section { padding:6rem 3rem; }
+        .section-inner { max-width:1200px; margin:0 auto; }
+
+        .section-label {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.68rem; font-weight:600;
+          letter-spacing:0.2em; text-transform:uppercase;
+          color:var(--sage); margin-bottom:0.75rem;
+          display:flex; align-items:center; gap:0.75rem;
+        }
+        .section-label::after {
+          content:''; flex:1; max-width:60px; height:1px;
+          background:var(--sage); opacity:0.4;
+        }
+
+        .section-title {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:clamp(2rem, 4vw, 3.2rem);
+          font-weight:700; color:#fff;
+          letter-spacing:-0.02em; margin-bottom:3rem;
+          line-height:1.1;
+        }
+
+        /* PROJECTS */
+        .projects-grid {
+          display:grid; grid-template-columns:repeat(2,1fr);
+          gap:1.25rem;
         }
 
         .project-card {
-          background:#fff; border:1px solid var(--beige-2);
-          border-radius:14px; padding:2rem; text-decoration:none;
-          color:inherit; display:block; transition:all 0.25s ease;
-          position:relative; overflow:hidden;
+          background:var(--dark-2);
+          border:1px solid var(--border);
+          border-radius:12px; padding:2rem;
+          text-decoration:none; color:inherit;
+          display:block; position:relative; overflow:hidden;
+          transition:all 0.4s ease;
         }
+
+        .project-card::before {
+          content:''; position:absolute;
+          top:0; left:0; right:0; height:1px;
+          background:linear-gradient(to right, transparent, var(--sage), transparent);
+          transform:scaleX(0); transition:transform 0.4s ease;
+        }
+
         .project-card::after {
-          content:''; position:absolute; bottom:0; left:0;
-          height:3px; width:0; background:var(--sage);
-          transition:width 0.3s ease;
-        }
-        .project-card:hover { border-color:var(--sage); transform:translateY(-4px); box-shadow:0 16px 40px rgba(107,143,110,0.14); }
-        .project-card:hover::after { width:100%; }
-
-        .ptag {
-          font-size:0.72rem; font-family:'Chakra Petch',sans-serif;
-          font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
-          background:var(--beige); color:var(--text-muted);
-          padding:4px 10px; border-radius:4px;
+          content:''; position:absolute; inset:0;
+          background:radial-gradient(circle at 50% 0%, rgba(107,143,110,0.05) 0%, transparent 60%);
+          opacity:0; transition:opacity 0.4s ease;
         }
 
+        .project-card:hover {
+          border-color:rgba(107,143,110,0.3);
+          transform:translateY(-4px);
+          box-shadow:0 20px 60px rgba(0,0,0,0.4);
+        }
+        .project-card:hover::before { transform:scaleX(1); }
+        .project-card:hover::after { opacity:1; }
+
+        .project-badge {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.65rem; font-weight:600;
+          letter-spacing:0.1em; text-transform:uppercase;
+          color:var(--sage); background:rgba(107,143,110,0.1);
+          border:1px solid rgba(107,143,110,0.2);
+          padding:3px 10px; border-radius:100px;
+        }
+
+        .project-metric {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.65rem; font-weight:500;
+          letter-spacing:0.08em; color:var(--text-muted);
+        }
+
+        .project-title {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:1.15rem; font-weight:700;
+          color:#fff; margin:0.85rem 0 0.5rem;
+          letter-spacing:-0.01em;
+        }
+
+        .project-desc {
+          font-size:0.88rem; line-height:1.75;
+          color:var(--text-muted); margin-bottom:1.25rem;
+        }
+
+        .project-tag {
+          font-family:'Chakra Petch',sans-serif;
+          font-size:0.65rem; font-weight:600;
+          letter-spacing:0.08em; text-transform:uppercase;
+          background:var(--dark-4); color:var(--text-muted);
+          padding:3px 9px; border-radius:4px;
+          border:1px solid var(--border);
+        }
+
+        /* DARK STRIP */
+        .dark-strip {
+          background:var(--dark-2);
+          border-top:1px solid var(--border);
+          border-bottom:1px solid var(--border);
+          padding:4rem 3rem;
+        }
+
+        /* CHAT SECTION */
+        .chat-box {
+          background:var(--dark-2);
+          border:1px solid var(--border);
+          border-radius:16px; overflow:hidden;
+          box-shadow:0 0 60px rgba(107,143,110,0.05);
+        }
+
+        .chat-header {
+          padding:1rem 1.5rem;
+          border-bottom:1px solid var(--border);
+          display:flex; align-items:center; gap:0.75rem;
+        }
+
+        /* CONTACT */
         .contact-card {
-          background:#fff; border:1px solid var(--beige-2);
+          background:var(--dark-2);
+          border:1px solid var(--border);
           border-radius:12px; padding:1.5rem 1.75rem;
-          text-decoration:none; color:var(--text-mid);
+          text-decoration:none; color:var(--text);
           display:flex; align-items:center; justify-content:space-between;
-          transition:all 0.2s;
+          transition:all 0.3s ease; position:relative; overflow:hidden;
         }
-        .contact-card:hover { border-color:var(--sage); color:var(--sage); transform:translateY(-3px); box-shadow:0 8px 24px rgba(107,143,110,0.1); }
+        .contact-card::before {
+          content:''; position:absolute; left:0; top:0; bottom:0;
+          width:3px; background:var(--sage);
+          transform:scaleY(0); transition:transform 0.3s ease;
+        }
+        .contact-card:hover { border-color:rgba(107,143,110,0.3); color:#fff; transform:translateX(4px); }
+        .contact-card:hover::before { transform:scaleY(1); }
+
+        /* FOOTER */
+        footer {
+          background:var(--dark);
+          border-top:1px solid var(--border);
+          padding:2rem 3rem;
+          display:flex; justify-content:space-between; align-items:center;
+          flex-wrap:wrap; gap:1rem;
+        }
 
         @media(max-width:768px) {
-          .hero-title { font-size:3.5rem !important; }
+          .hero-title { white-space:normal !important; font-size:clamp(2.5rem,10vw,4rem) !important; }
           .projects-grid { grid-template-columns:1fr !important; }
           .contact-grid { grid-template-columns:1fr !important; }
-          .stats-grid { grid-template-columns:1fr 1fr !important; }
-          .nav-links { display:none !important; }
+          .nav-links { display:none; }
+          nav { padding:1rem 1.5rem; }
+          section { padding:4rem 1.5rem; }
+          .hero { padding:7rem 1.5rem 3rem; }
         }
       `}</style>
 
+      {/* CURSOR */}
+      <div className="cursor-dot" style={{ left: mousePos.x, top: mousePos.y }} />
+      <div className="cursor-ring" style={{ left: mousePos.x, top: mousePos.y }} />
+
       {/* NAV */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(15,15,14,0.93)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        padding: '1rem 3rem',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-      }}>
-        <span className="chakra" style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.1em', color: '#fff' }}>
-          ME<span style={{ color: 'var(--sage)' }}>.</span>
+      <nav>
+        <span className="nav-logo chakra">
+          ME<span style={{ color: "var(--sage)" }}>.</span>
         </span>
-        <div className="nav-links" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
+        <div className="nav-links">
           <a href="#projects" className="nav-link">Projects</a>
           <a href="#skills" className="nav-link">Skills</a>
           <a href="#chat" className="nav-link">AI Chat</a>
           <a href="#contact" className="nav-link">Contact</a>
-          <a href="https://www.upwork.com/freelancers/~01be288743c2f0f1e9" target="_blank" className="btn-sage">Hire me ↗</a>
+          <a href="https://www.upwork.com/freelancers/~01be288743c2f0f1e9" target="_blank" className="btn-hire">
+            <span>Hire me ↗</span>
+          </a>
         </div>
       </nav>
 
       {/* HERO */}
-      <section style={{
-        background: 'var(--dark)', minHeight: '100vh',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: '6rem 3rem', position: 'relative', overflow: 'hidden'
-      }}>
-        {/* Background grid decoration */}
-        <div style={{
-          position: 'absolute', inset: 0, opacity: 0.03,
-          backgroundImage: 'linear-gradient(rgba(107,143,110,1) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,110,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px'
-        }} />
+      <section className="hero" ref={heroRef}>
+        <div className="hero-grid" />
+        <div className="hero-glow" />
+        <div className="hero-scanline" />
 
-        <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <div className="fade-up d1" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--sage)', boxShadow: '0 0 12px var(--sage)' }} />
-            <span className="chakra" style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--sage)' }}>
-              Available for freelance · Tunisia
-            </span>
+        <div className="hero-inner">
+          <div className="hero-badge fade-up d1">
+            <span className="hero-dot" />
+            Available for freelance · Tunisia
           </div>
 
-          <h1 className="chakra fade-up d2 hero-title" style={{
-  fontSize:'clamp(2.5rem, 7vw, 7.5rem)', fontWeight:700, lineHeight:1.05,
-  color:'#fff', marginBottom:'2.5rem', letterSpacing:'-0.02em',
-  textAlign:'center', whiteSpace:'nowrap'
-}}>
-            I build AI{' '}
-            <span style={{ color: 'transparent', WebkitTextStroke: '2px var(--sage)' }}>automations</span>{' '}
-            that work<span style={{ color: 'var(--sage)' }}>.</span>
-            <span className="cursor" />
+          <h1 className="hero-title fade-up d2">
+            I build <span className="outline">AI</span><br />
+            automations<br />
+            that work<span style={{ color: "var(--sage)" }}>.</span>
+            <span className="cursor-blink" />
           </h1>
 
-          <p className="fade-up d3" style={{
-            fontSize: '1.5rem', lineHeight: 1.85, color: 'rgba(255,255,255,0.45)',
-            maxWidth: '680px', marginBottom: '3rem', fontWeight: 300
-          }}>
+          <p className="hero-sub fade-up d3">
             Montahe Ezzine — n8n workflows, LLM-powered bots,
             and API integrations built to solve real problems fast.
           </p>
 
-          <div className="fade-up d4" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '5rem' }}>
-            <div style={{ position: 'relative', display: 'inline-block' }}>
-              <button
-                className="btn-sage"
-                onClick={() => {
-                  const menu = document.getElementById('contact-menu');
-                  if (menu) menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
-                }}
-                style={{ border: 'none', cursor: 'pointer' }}
-              >
+          <div className="hero-buttons fade-up d4">
+            <div style={{ position: "relative" }}>
+              <button className="btn-primary" onClick={() => setContactOpen(!contactOpen)}>
                 Get in touch ↓
               </button>
-              <div id="contact-menu" style={{
-                display: 'none',
-                position: 'absolute',
-                top: 'calc(100% + 10px)',
-                left: 0,
-                background: '#1A1A18',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '10px',
-                padding: '0.5rem',
-                flexDirection: 'column',
-                gap: '0.25rem',
-                minWidth: '220px',
-                zIndex: 100,
-                boxShadow: '0 16px 40px rgba(0,0,0,0.4)'
-              }}>
-                {[
-                  { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
-                  { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
-                  { label: "Email", sub: "ezzinemontahe@gmail.com", href: "mailto:ezzinemontahe@gmail.com" },
-                ].map(c => (
-                  <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    padding: '0.75rem 1rem', borderRadius: '8px', textDecoration: 'none',
-                    transition: 'background 0.15s', color: '#fff',
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <div>
-                      <div style={{ fontFamily: 'Chakra Petch,sans-serif', fontWeight: 600, fontSize: '0.9rem', letterSpacing: '0.04em' }}>{c.label}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>{c.sub}</div>
-                    </div>
-                    <span style={{ color: '#6B8F6E', fontSize: '1rem' }}>↗</span>
-                  </a>
-                ))}
-              </div>
+              {contactOpen && (
+                <div className="contact-menu">
+                  {[
+                    { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
+                    { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
+                    { label: "Email", sub: "ezzinemontahe@gmail.com", href: "mailto:ezzinemontahe@gmail.com" },
+                  ].map(c => (
+                    <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="contact-option">
+                      <div>
+                        <div className="chakra" style={{ fontWeight: 700, fontSize: "0.9rem" }}>{c.label}</div>
+                        <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", marginTop: "2px" }}>{c.sub}</div>
+                      </div>
+                      <span style={{ color: "var(--sage)" }}>↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-            <a href="#projects" className="btn-ghost">See my work ↓</a>
+            <a href="#projects" className="btn-secondary">See my work ↓</a>
           </div>
-        </div>
-      </section>
 
-      {/* MARQUEE */}
-      <div id="skills" className="marquee-wrap" style={{
-        background: 'var(--beige)', borderTop: '1px solid var(--beige-2)',
-        borderBottom: '1px solid var(--beige-2)', padding: '1.1rem 0'
-      }}>
-        <div className="marquee-track">
-          {[
-            "n8n Automation", "Groq API", "OpenAI API", "Telegram Bots", "Make.com",
-            "REST APIs", "JavaScript", "Spring Boot", "MySQL", "Linux · Ubuntu",
-            "API Integration", "AI Chatbots", "Prompt Engineering", "Self-Hosted AI",
-            "n8n Automation", "Groq API", "OpenAI API", "Telegram Bots", "Make.com",
-            "REST APIs", "JavaScript", "Spring Boot", "MySQL", "Linux · Ubuntu",
-            "API Integration", "AI Chatbots", "Prompt Engineering", "Self-Hosted AI",
-          ].map((s, i) => <span key={i} className="skill-tag">{s}</span>)}
-        </div>
-      </div>
-
-      {/* PROJECTS */}
-      <section id="projects" style={{ maxWidth: '1100px', margin: '0 auto', padding: '7rem 3rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem', flexWrap: 'wrap', gap: '1rem' }}>
-          <div>
-            <p className="chakra" style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--sage)', marginBottom: '0.5rem' }}>
-              Featured Work
-            </p>
-            <h2 className="chakra" style={{ fontSize: '3rem', fontWeight: 700, color: 'var(--text-dark)', letterSpacing: '-0.02em' }}>
-              Things I've built
-            </h2>
-          </div>
-          <a href="https://github.com/EzzineMontahe" target="_blank" style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textDecoration: 'none', fontFamily: 'Chakra Petch,sans-serif', letterSpacing: '0.05em' }}>
-            View all on GitHub ↗
-          </a>
-        </div>
-
-        <div className="projects-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-          {[
-            { title: "Home AI Assistant", desc: "Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support. Fully multilingual: EN, FR, AR.", tags: ["n8n", "Groq API", "Telegram"], link: "https://github.com/EzzineMontahe/home-ai-assistant", badge: "AI Automation" },
-            { title: "Student Grade Tracker", desc: "Full-stack CRUD web app with student dashboard, grade calculations, and averages. Spring Boot + Thymeleaf + MySQL.", tags: ["Spring Boot", "MySQL", "Java"], link: "https://github.com/EzzineMontahe/student-grade-tracker", badge: "Full Stack" },
-            { title: "Portfolio AI", desc: "This site — Next.js portfolio with an embedded AI assistant that answers questions about my work and handles inquiries in real time.", tags: ["Next.js", "Groq API", "AI"], link: "#", badge: "AI + Web" },
-            { title: "Linux Security Lab", desc: "Ubuntu server hardening with SSH configuration, firewall rules, and automated Trivy vulnerability scanning with Jira reporting.", tags: ["Linux", "Bash", "Security"], link: "https://github.com/EzzineMontahe", badge: "Security" }
-          ].map(p => (
-            <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer" className="project-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <span className="ptag">{p.badge}</span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>↗</span>
+          {/* Mini stats */}
+          <div className="fade-up d5" style={{
+            display: "flex", gap: "3rem", justifyContent: "center",
+            borderTop: "1px solid var(--border)", paddingTop: "2.5rem",
+            flexWrap: "wrap"
+          }}>
+            {[["5+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
+              <div key={label} style={{ textAlign: "center" }}>
+                <div className="chakra" style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>{val}</div>
+                <div className="chakra" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-muted)" }}>{label}</div>
               </div>
-              <h3 className="chakra" style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.65rem', color: 'var(--text-dark)', letterSpacing: '-0.01em' }}>
-                {p.title}
-              </h3>
-              <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
-                {p.desc}
-              </p>
-              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                {p.tags.map(t => <span key={t} className="ptag">{t}</span>)}
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* DARK STRIP */}
-      <section style={{ background: 'var(--dark)', padding: '5rem 3rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '3rem' }}>
-          <div>
-            <h3 className="chakra" style={{ fontSize: '2.5rem', fontWeight: 700, color: '#fff', lineHeight: 1.2, marginBottom: '1rem', letterSpacing: '-0.02em' }}>
-              Solution-oriented.<br />
-              <span style={{ color: 'var(--sage)' }}>Accountable for outcomes.</span>
-            </h3>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '1rem', maxWidth: '400px', lineHeight: 1.8 }}>
-              I don't just write code — I deliver working solutions. Every project I take on, I see through to completion.
-            </p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {["Arabic · Native", "French · Fluent", "English · C1"].map(l => (
-              <span key={l} className="chakra" style={{
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.6)',
-                padding: '0.6rem 1.25rem', borderRadius: '6px',
-                fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.05em'
-              }}>{l}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* AI CHAT SECTION */}
-      <section id="chat" style={{ maxWidth: '1100px', margin: '0 auto', padding: '7rem 3rem' }}>
-        <p className="chakra" style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--sage)', marginBottom: '0.5rem' }}>
-          AI Assistant
-        </p>
-        <h2 className="chakra" style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-dark)', letterSpacing: '-0.02em' }}>
-          Ask me anything
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '2.5rem', maxWidth: '500px', lineHeight: 1.7 }}>
-          My AI assistant knows everything about my work, skills, and availability. Try it right here.
-        </p>
-        <div style={{
-          background: 'var(--dark)', borderRadius: '16px',
-          padding: '2rem', border: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.08)'
+      {/* SKILLS MARQUEE */}
+      <div id="skills" style={{ background: "var(--dark-2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+        <div className="marquee-wrap">
+          <div className="marquee-track">
+            {[...SKILLS, ...SKILLS].map((s, i) => (
+              <div key={i} className="skill-logo">
+                <img src={s.icon} alt={s.name} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                <span>{s.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* PROJECTS */}
+      <section id="projects" style={{ background: "var(--dark)" }}>
+        <div className="section-inner">
+          <p className="section-label reveal">Featured Work</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1rem" }}>
+            <h2 className="section-title reveal" style={{ marginBottom: 0 }}>Things I've built</h2>
+            <a href="https://github.com/EzzineMontahe" target="_blank" style={{
+              fontFamily: "Chakra Petch, sans-serif", fontSize: "0.75rem",
+              color: "var(--text-muted)", textDecoration: "none",
+              letterSpacing: "0.08em", transition: "color 0.2s"
+            }}>View all on GitHub ↗</a>
+          </div>
+
+          <div className="projects-grid">
+            {PROJECTS.map((p, i) => (
+              <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer"
+                className={`project-card reveal reveal-delay-${(i % 4) + 1}`}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                  <span className="project-badge">{p.badge}</span>
+                  <span className="project-metric">{p.metric}</span>
+                </div>
+                <h3 className="project-title">{p.title}</h3>
+                <p className="project-desc">{p.desc}</p>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
+                </div>
+                <div style={{
+                  position: "absolute", top: "1.5rem", right: "1.5rem",
+                  color: "var(--text-muted)", fontSize: "1rem",
+                  transition: "color 0.2s, transform 0.2s"
+                }}>↗</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* DARK STRIP */}
+      <div className="dark-strip">
+        <div className="section-inner" style={{
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", flexWrap: "wrap", gap: "3rem"
         }}>
-          <ChatWidget inline={true} />
+          <div className="reveal">
+            <h3 className="chakra" style={{
+              fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 700,
+              color: "#fff", lineHeight: 1.2, marginBottom: "1rem"
+            }}>
+              Solution-oriented.<br />
+              <span style={{ color: "var(--sage)" }}>Accountable for outcomes.</span>
+            </h3>
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.95rem", maxWidth: "400px", lineHeight: 1.8 }}>
+              I don't just write code — I deliver working solutions.
+              Every project I take on, I see through to completion.
+            </p>
+          </div>
+          <div className="reveal reveal-delay-2" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {["Arabic · Native", "French · Fluent", "English · C1"].map(l => (
+              <span key={l} className="chakra" style={{
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,255,0.5)",
+                padding: "0.55rem 1.25rem", borderRadius: "4px",
+                fontSize: "0.82rem", fontWeight: 500, letterSpacing: "0.06em"
+              }}>{l}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* AI CHAT */}
+      <section id="chat" style={{ background: "var(--dark)" }}>
+        <div className="section-inner">
+          <p className="section-label reveal">AI Assistant</p>
+          <h2 className="section-title reveal">Ask me anything</h2>
+          <p className="reveal" style={{ color: "var(--text-muted)", fontSize: "1rem", marginBottom: "2.5rem", maxWidth: "500px", lineHeight: 1.7 }}>
+            My AI assistant knows everything about my work, skills, and availability. Try it right here.
+          </p>
+          <div className="chat-box reveal">
+            <div className="chat-header">
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--sage)", animation: "pulse-glow 2s infinite" }} />
+              <span className="chakra" style={{ fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.06em", color: "#fff" }}>
+                Montahe's AI Assistant
+              </span>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginLeft: "auto" }}>
+                Powered by Groq · LLaMA 3.3 70B
+              </span>
+            </div>
+            <div style={{ padding: "1.5rem" }}>
+              <ChatWidget inline={true} />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CONTACT */}
-      <section id="contact" style={{ background: 'var(--beige)', padding: '7rem 3rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <p className="chakra" style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--sage)', marginBottom: '0.5rem' }}>
-            Contact
-          </p>
-          <h2 className="chakra" style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-dark)', letterSpacing: '-0.02em' }}>
-            Let's work together
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '3rem', lineHeight: 1.7 }}>
+      <section id="contact" style={{ background: "var(--dark-2)", borderTop: "1px solid var(--border)" }}>
+        <div className="section-inner">
+          <p className="section-label reveal">Contact</p>
+          <h2 className="section-title reveal">Let's work together</h2>
+          <p className="reveal" style={{ color: "var(--text-muted)", fontSize: "1rem", marginBottom: "3rem", lineHeight: 1.7 }}>
             Open to freelance projects, automations, and collaborations.
           </p>
-          <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+          <div className="contact-grid reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
             {[
               { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
               { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
@@ -381,10 +770,10 @@ export default function Home() {
             ].map(c => (
               <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="contact-card">
                 <div>
-                  <div className="chakra" style={{ fontWeight: 700, fontSize: '1.05rem', marginBottom: '4px', letterSpacing: '0.02em' }}>{c.label}</div>
-                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{c.sub}</div>
+                  <div className="chakra" style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "4px" }}>{c.label}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{c.sub}</div>
                 </div>
-                <span style={{ fontSize: '1.3rem', color: 'var(--sage)' }}>↗</span>
+                <span style={{ fontSize: "1.2rem", color: "var(--sage)" }}>↗</span>
               </a>
             ))}
           </div>
@@ -392,14 +781,11 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{
-        background: 'var(--dark)', padding: '2rem 3rem',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem'
-      }}>
-        <span className="chakra" style={{ fontSize: '0.9rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em' }}>
-          ME<span style={{ color: 'var(--sage)' }}>.</span>
+      <footer>
+        <span className="chakra" style={{ fontSize: "0.9rem", fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em" }}>
+          ME<span style={{ color: "var(--sage)" }}>.</span>
         </span>
-        <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'DM Sans, sans-serif' }}>
+        <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.2)" }}>
           © 2026 Montahe Ezzine · Built with Next.js + Groq AI
         </span>
       </footer>
