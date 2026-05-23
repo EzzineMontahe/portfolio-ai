@@ -104,10 +104,13 @@ export default function Home() {
           --sage: #6B8F6E;
           --sage-light: #8fb892;
           --sage-glow: rgba(107,143,110,0.15);
+          --pink: #C4728A;
+          --pink-light: #d98fa3;
+          --pink-glow: rgba(196,114,138,0.15);
           --cream: #e8e0d0;
-          --text: #d4cfc7;
-          --text-muted: #6b6560;
-          --border: rgba(255,255,255,0.06);
+          --text: #c8c4be;
+          --text-muted: #8a8580;
+          --border: rgba(255,255,255,0.08);
         }
 
         html { scroll-behavior: smooth; }
@@ -301,16 +304,17 @@ export default function Home() {
           font-family:'Chakra Petch',sans-serif;
           font-size:0.72rem; font-weight:600;
           letter-spacing:0.2em; text-transform:uppercase;
-          color:var(--sage); margin-bottom:2rem;
+          color:var(--pink-light); margin-bottom:2rem;
           padding:0.4rem 1rem;
-          border:1px solid rgba(107,143,110,0.3);
+          border:1px solid rgba(196,114,138,0.3);
           border-radius:100px;
-          background:rgba(107,143,110,0.05);
+          background:rgba(196,114,138,0.05);
         }
 
         .hero-dot {
           width:6px; height:6px; border-radius:50%;
-          background:var(--sage);
+          background:var(--pink);
+          box-shadow: 0 0 8px var(--pink);
           animation: pulse-glow 2s ease infinite;
         }
 
@@ -413,12 +417,13 @@ export default function Home() {
           font-family:'Chakra Petch',sans-serif;
           font-size:0.68rem; font-weight:600;
           letter-spacing:0.2em; text-transform:uppercase;
-          color:var(--sage); margin-bottom:0.75rem;
+          color:var(--pink-light); margin-bottom:0.75rem;
           display:flex; align-items:center; gap:0.75rem;
         }
         .section-label::after {
           content:''; flex:1; max-width:60px; height:1px;
-          background:var(--sage); opacity:0.4;
+          background:linear-gradient(to right, var(--sage), var(--pink));
+          opacity:0.6;
         }
 
         .section-title {
@@ -469,15 +474,15 @@ export default function Home() {
           font-family:'Chakra Petch',sans-serif;
           font-size:0.65rem; font-weight:600;
           letter-spacing:0.1em; text-transform:uppercase;
-          color:var(--sage); background:rgba(107,143,110,0.1);
-          border:1px solid rgba(107,143,110,0.2);
+          color:var(--pink-light); background:rgba(196,114,138,0.1);
+          border:1px solid rgba(196,114,138,0.25);
           padding:3px 10px; border-radius:100px;
         }
 
         .project-metric {
           font-family:'Chakra Petch',sans-serif;
           font-size:0.65rem; font-weight:500;
-          letter-spacing:0.08em; color:var(--text-muted);
+          letter-spacing:0.08em; color:#a09b96;
         }
 
         .project-title {
@@ -488,8 +493,8 @@ export default function Home() {
         }
 
         .project-desc {
-          font-size:0.88rem; line-height:1.75;
-          color:var(--text-muted); margin-bottom:1.25rem;
+          font-size:0.9rem; line-height:1.8;
+          color:#9a9590; margin-bottom:1.25rem;
         }
 
         .project-tag {
