@@ -71,7 +71,6 @@ const PROJECTS = [
 
 export default function Home() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [contactOpen, setContactOpen] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -618,28 +617,9 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons fade-up d4">
-            <div style={{ position: "relative" }}>
-              <button className="btn-primary" onClick={() => setContactOpen(!contactOpen)}>
-                Get in touch ↓
-              </button>
-              {contactOpen && (
-                <div className="contact-menu">
-                  {[
-                    { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
-                    { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
-                    { label: "Email", sub: "ezzinemontahe@gmail.com", href: "mailto:ezzinemontahe@gmail.com" },
-                  ].map(c => (
-                    <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="contact-option">
-                      <div>
-                        <div className="chakra" style={{ fontWeight: 700, fontSize: "0.9rem" }}>{c.label}</div>
-                        <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", marginTop: "2px" }}>{c.sub}</div>
-                      </div>
-                      <span style={{ color: "var(--sage)" }}>↗</span>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
+            <a href="#contact" className="btn-primary" style={{ textDecoration: "none" }}>
+              Get in touch ↓
+            </a>
             <a href="#projects" className="btn-secondary">See my work ↓</a>
           </div>
 
