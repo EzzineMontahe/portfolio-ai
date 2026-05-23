@@ -209,7 +209,7 @@ export default function Home() {
                 className="btn-sage"
                 onClick={() => {
                   const menu = document.getElementById('contact-menu');
-                  menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+                  if (menu) menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
                 }}
                 style={{ border: 'none', cursor: 'pointer' }}
               >
