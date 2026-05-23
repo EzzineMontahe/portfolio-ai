@@ -185,10 +185,10 @@ export default function Home() {
           </div>
 
           <h1 className="chakra fade-up d2 hero-title" style={{
-            fontSize: '7.5rem', fontWeight: 700, lineHeight: 1.0,
-            color: '#fff', marginBottom: '2.5rem', letterSpacing: '-0.02em',
-            textAlign: 'center', whiteSpace: 'nowrap'
-          }}>
+  fontSize:'clamp(2.5rem, 7vw, 7.5rem)', fontWeight:700, lineHeight:1.05,
+  color:'#fff', marginBottom:'2.5rem', letterSpacing:'-0.02em',
+  textAlign:'center', whiteSpace:'nowrap'
+}}>
             I build AI{' '}
             <span style={{ color: 'transparent', WebkitTextStroke: '2px var(--sage)' }}>automations</span>{' '}
             that work<span style={{ color: 'var(--sage)' }}>.</span>
