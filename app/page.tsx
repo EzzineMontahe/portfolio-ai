@@ -617,11 +617,47 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons fade-up d4">
-            <a href="#contact" className="btn-primary" style={{ textDecoration: "none" }}>
-              Get in touch ↓
-            </a>
-            <a href="#projects" className="btn-secondary">See my work ↓</a>
-          </div>
+  <a href="#contact" className="btn-primary" style={{ textDecoration: "none" }}>
+    Get in touch ↓
+  </a>
+  <a href="#projects" className="btn-secondary">See my work ↓</a>
+  <div style={{ position: "relative", display: "inline-block" }} id="cv-wrapper">
+    <button className="btn-secondary" onClick={() => {
+      const m = document.getElementById("cv-menu");
+      if (m) m.style.display = m.style.display === "flex" ? "none" : "flex";
+    }}>
+      Download CV ↓
+    </button>
+    <div id="cv-menu" style={{
+      display: "none", position: "absolute",
+      top: "calc(100% + 10px)", left: "50%",
+      transform: "translateX(-50%)",
+      background: "#111", border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: "10px", padding: "0.5rem",
+      flexDirection: "column", gap: "0.25rem",
+      minWidth: "200px", zIndex: 9999,
+      boxShadow: "0 20px 60px rgba(0,0,0,0.6)"
+    }}>
+      {[
+        { label: "English Version", href: "/cv-en.pdf" },
+        { label: "French Version", href: "/cv-fr.pdf" },
+      ].map(c => (
+        <a key={c.label} href={c.href} download target="_blank" rel="noopener noreferrer"
+          style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            padding: "0.8rem 1rem", borderRadius: "8px",
+            textDecoration: "none", color: "#fff", transition: "background 0.15s"
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "rgba(107,143,110,0.1)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+        >
+          <span className="chakra" style={{ fontWeight: 600, fontSize: "0.88rem" }}>{c.label}</span>
+          <span style={{ color: "var(--sage)" }}>↓</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
 
           {/* Mini stats */}
           <div className="fade-up d5" style={{
