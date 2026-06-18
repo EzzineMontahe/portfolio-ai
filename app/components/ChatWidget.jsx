@@ -8,6 +8,7 @@ export default function ChatWidget({ inline = false }) {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sessionId] = useState(() => Math.random().toString(36).substring(2, 10));
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -20,7 +21,7 @@ export default function ChatWidget({ inline = false }) {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+        body: JSON.stringify({ messages: updatedMessages, sessionId }),
       });
       const data = await response.json();
       setMessages([...updatedMessages, { role: "assistant", content: data.reply }]);
