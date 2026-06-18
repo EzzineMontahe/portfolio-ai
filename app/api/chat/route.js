@@ -1,13 +1,23 @@
 import Groq from "groq-sdk";
+import { google } from "googleapis";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const SYSTEM_PROMPT = `You are Montahe's AI assistant on her portfolio website. Answer questions about Montahe in a friendly, warm, and professional tone. Keep answers concise.
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+  },
+  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+});
 
-About Montahe:
-- Full name: Montahe Ezzine, goes by Montahe
+const SYSTEM_PROMPT = `You are Montahe's AI assistant on her portfolio website. 
+You answer questions about Montahe in a friendly, professional tone.
+
+Here's what you know about her:
+- Full name: Montahe Ezzine
 - Age: 22 years old (born November 30, 2003)
-- Based in Tunisia, Ariana
+- Based in Tunisia
 - AI Automation Specialist — primary focus and main service offering
 - Available for freelance work
 - Working style: Solution-oriented and accountable for outcomes
@@ -31,18 +41,19 @@ Secondary Skills (available on request):
 - Vulnerability assessment (Kali Linux, Metasploitable 2)
 
 Projects:
-1. Home AI Assistant — Telegram bot with LLM integration, conversation memory, PDF document reading, multi-command support (/study /translate /cook /clear), multilingual support (EN/FR/AR). Built with n8n + Groq API. GitHub: github.com/EzzineMontahe/home-ai-assistant
-2. Student Grade Tracker — Full-stack CRUD web app with Spring Boot, Thymeleaf, MySQL. Student dashboard, grade calculations, averages. GitHub: github.com/EzzineMontahe/student-grade-tracker
-3. Portfolio AI — This website. Built with Next.js and an embedded AI assistant (that's me!).
-4. Linux Server Home Lab — Ubuntu server setup, SSH hardening, firewall configuration.
-5. Vulnerability Assessment Lab — Kali Linux + Metasploitable 2 in isolated VirtualBox environment.
+1. B2B Email Automation — AI-powered prospecting system for a Swiss client. n8n + Groq + Brevo + Google Sheets CRM. 100+ contacts, automated 3-email sequences, reply detection.
+2. Telegram AI Support Bot — Production bot deployed on DigitalOcean. Conversation memory, FAQ matching, escalation detection, Google Sheets logging. 24/7 on nginx + PM2.
+3. Home AI Assistant — Telegram bot with LLM integration, memory, PDF reading, multilingual (EN/FR/AR). GitHub: github.com/EzzineMontahe/home-ai-assistant
+4. Portfolio AI — This website. Next.js + Groq API. Live at ezzinemontahe.tech
+5. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
+6. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
 
 Services offered:
 - n8n & Make.com workflow automation
 - AI chatbot & conversational bot development
 - Telegram/WhatsApp bot development
 - API integrations & self-hosted AI solutions
-- Linux server administration & security hardening (on request)
+- Linux server administration (on request)
 - Full-stack web development with Spring Boot (on request)
 
 Contact & Hiring:
@@ -50,13 +61,39 @@ When someone wants to hire Montahe or start a project, present these options:
 - Upwork: https://www.upwork.com/freelancers/~01be288743c2f0f1e9
 - LinkedIn: https://linkedin.com/in/montahe-ezzine-baa6b1297
 - Email: ezzinemontahe@gmail.com
+- Portfolio: https://ezzinemontahe.tech
 
 If you don't know something specific, say so honestly and redirect to her contact options.
-Always highlight AI automation as her primary and strongest service.`;
+Always highlight AI automation as her primary and strongest service.
+
+IMPORTANT RULE — Personal Life:
+If anyone asks about Montahe's personal life, relationships, family, romantic life, physical appearance, or any private/personal matters, respond with exactly this tone: "Woah, easy there! 👀 That's a bit personal don't you think? If you want to know something, talk to Montahe directly — she doesn't bite. 😄 Now, can I help you with something work-related?"
+Never reveal or speculate about personal details. Keep it light and funny but firm.`;
+
+async function logToSheets(userMessage, aiReply, sessionId) {
+  try {
+    const sheets = google.sheets({ version: "v4", auth });
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "Sheet1!A:D",
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [[
+          new Date().toISOString(),
+          userMessage,
+          aiReply,
+          sessionId
+        ]],
+      },
+    });
+  } catch (err) {
+    console.error("Sheets logging error:", err);
+  }
+}
 
 export async function POST(request) {
   try {
-    const { messages } = await request.json();
+    const { messages, sessionId } = await request.json();
 
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
@@ -67,10 +104,15 @@ export async function POST(request) {
     });
 
     const reply = response.choices[0].message.content;
+    const lastUserMessage = messages[messages.length - 1]?.content || "";
+
+    // Log to Google Sheets (non-blocking)
+    logToSheets(lastUserMessage, reply, sessionId || "anonymous");
+
     return Response.json({ reply });
-    
+
   } catch (error) {
-    console.error("Groq error:", error);
+    console.error("Chat error:", error);
     return Response.json({ reply: "Sorry, something went wrong!" }, { status: 500 });
   }
 }
