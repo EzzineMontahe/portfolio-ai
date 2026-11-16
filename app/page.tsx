@@ -28,12 +28,28 @@ const PROJECTS = [
     metric: "100+ contacts automated",
   },
   {
+    title: "HubSpot Lead Automation",
+    desc: "Lead-to-deal workflow: n8n validates incoming leads, creates HubSpot contacts and deals, logs to Google Sheets and sends real-time Slack alerts. Built for 20+ leads/day, 150x faster than manual entry.",
+    tags: ["n8n", "HubSpot", "Slack", "Google Sheets"],
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/hubspot-lead-automation",
+    metric: "Lead → CRM → Slack",
+  },
+  {
     title: "Telegram AI Support Bot",
-    desc: "Production-ready AI support bot deployed on DigitalOcean. Features: sub-second responses, FAQ matching, conversation memory, smart escalation, Google Sheets logging. Cloud-hosted with ngrok + PM2.",
-    tags: ["n8n", "Groq API", "Telegram", "DigitalOcean"],
+    desc: "Support bot with conversation memory, FAQ matching, smart escalation and Google Sheets logging. Upgraded to a ReAct AI agent with live web search through Tavily MCP.",
+    tags: ["n8n", "Groq API", "Telegram", "Tavily MCP"],
     badge: "AI Automation",
     link: "https://github.com/EzzineMontahe/telegram-ai-support-bot",
-    metric: "Cloud deployed",
+    metric: "ReAct AI agent",
+  },
+  {
+    title: "Lead Personalizer",
+    desc: "Python script that reads a CSV of leads, writes a personalized opener for each one with an LLM, and exports the enriched CSV.",
+    tags: ["Python", "Groq API", "CSV"],
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/lead-personalizer",
+    metric: "CSV in → CSV out",
   },
   {
     title: "Home AI Assistant",
@@ -45,11 +61,35 @@ const PROJECTS = [
   },
   {
     title: "Portfolio AI",
-    desc: "This site — Next.js portfolio with an embedded AI assistant that answers questions about my work and handles inquiries in real time.",
-    tags: ["Next.js", "Groq API", "AI"],
+    desc: "This site — Next.js portfolio with an embedded AI assistant that answers questions about my work and logs conversations to Google Sheets.",
+    tags: ["Next.js", "Groq API", "Vercel"],
     badge: "AI + Web",
-    link: "#",
+    link: "https://github.com/EzzineMontahe/portfolio-ai",
     metric: "Live AI chat",
+  },
+  {
+    title: "Vuln Triage Pipeline",
+    desc: "Python pipeline: nmap scan → XML parser → NVD API CVE lookup → Markdown/JSON report. Tested against Metasploitable 2.",
+    tags: ["Python", "nmap", "NVD API"],
+    badge: "Security",
+    link: "https://github.com/EzzineMontahe/vuln-triage-pipeline",
+    metric: "nmap → NVD → report",
+  },
+  {
+    title: "OpenStack Private Cloud Lab",
+    desc: "Single-node private cloud on DevStack (Keystone, Nova, Neutron/OVN, Glance, Horizon) with an isolated network, router and instance, plus 11 documented troubleshooting fixes.",
+    tags: ["OpenStack", "DevStack", "VirtualBox", "Linux"],
+    badge: "Cloud",
+    link: "https://github.com/EzzineMontahe/openstack-private-cloud-lab",
+    metric: "Private cloud lab",
+  },
+  {
+    title: "Exam Monitoring System",
+    desc: "Real-time exam supervision: FastAPI backend with WebSockets, a C# WinForms client and a live HTML/JS dashboard, backed by PostgreSQL.",
+    tags: ["FastAPI", "C#", "PostgreSQL", "WebSocket"],
+    badge: "Full Stack",
+    link: "https://github.com/EzzineMontahe/exam-monitor-system",
+    metric: "Real-time dashboard",
   },
   {
     title: "Student Grade Tracker",
@@ -65,7 +105,7 @@ const PROJECTS = [
     tags: ["Linux", "Bash", "Security"],
     badge: "Security",
     link: "https://github.com/EzzineMontahe",
-    metric: "Production hardened",
+    metric: "Hardened server",
   },
 ];
 
@@ -665,7 +705,7 @@ export default function Home() {
             borderTop: "1px solid var(--border)", paddingTop: "2.5rem",
             flexWrap: "wrap"
           }}>
-            {[["6+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
+            {[["10+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
               <div key={label} style={{ textAlign: "center" }}>
                 <div className="chakra" style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>{val}</div>
                 <div className="chakra" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-muted)" }}>{label}</div>

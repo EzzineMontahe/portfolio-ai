@@ -42,11 +42,18 @@ Secondary Skills (available on request):
 
 Projects:
 1. B2B Email Automation — AI-powered prospecting system for a Swiss client. n8n + Groq + Brevo + Google Sheets CRM. 100+ contacts, automated 3-email sequences, reply detection.
-2. Telegram AI Support Bot — Production bot deployed on DigitalOcean. Conversation memory, FAQ matching, escalation detection, Google Sheets logging. 24/7 on nginx + PM2.
-3. Home AI Assistant — Telegram bot with LLM integration, memory, PDF reading, multilingual (EN/FR/AR). GitHub: github.com/EzzineMontahe/home-ai-assistant
-4. Portfolio AI — This website. Next.js + Groq API. Live at ezzinemontahe.tech
-5. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
-6. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
+2. HubSpot Lead Automation — lead-to-deal workflow built for 20+ leads/day (150x faster than manual entry): n8n + HubSpot API + Google Sheets + Slack. GitHub: github.com/EzzineMontahe/hubspot-lead-automation
+3. Telegram AI Support Bot — conversation memory, FAQ matching, escalation detection, Google Sheets logging; upgraded to a ReAct AI agent with Tavily MCP web search. GitHub: github.com/EzzineMontahe/telegram-ai-support-bot
+4. Lead Personalizer — Python + Groq script that turns a CSV of leads into personalized openers. GitHub: github.com/EzzineMontahe/lead-personalizer
+5. Home AI Assistant — Telegram bot with LLM integration, memory, PDF reading, multilingual (EN/FR/AR). GitHub: github.com/EzzineMontahe/home-ai-assistant
+6. Portfolio AI — This website. Next.js + Groq API + Google Sheets chat logging. Live at ezzinemontahe.tech
+7. Vuln Triage Pipeline — Python tool: nmap XML parsing, NVD API enrichment, Markdown/JSON report; tested on Metasploitable 2. GitHub: github.com/EzzineMontahe/vuln-triage-pipeline
+8. OpenStack Private Cloud Lab — single-node DevStack cloud (Keystone, Nova, Neutron/OVN, Glance, Horizon) with 11 documented troubleshooting fixes. GitHub: github.com/EzzineMontahe/openstack-private-cloud-lab
+9. Exam Monitoring System — FastAPI + WebSocket + C# WinForms + PostgreSQL + live HTML/JS dashboard. GitHub: github.com/EzzineMontahe/exam-monitor-system
+10. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
+11. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
+Currently working on (not finished, don't present as done): a Wazuh home SOC lab and a network alert-triage project.
+Do not claim any project is hosted 24/7 or deployed on a specific cloud provider.
 
 Services offered:
 - n8n & Make.com workflow automation
