@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Montahe Ezzine | AI Automation Specialist",
-  description: "AI Automation Specialist based in Tunisia. n8n workflows, LLM-powered bots, and API integrations that solve real problems.",
+  title: "Montahe Ezzine | AI Automation & Network Security",
+  description: "Network & Systems Engineering student and AI Automation Specialist based in Tunisia. n8n workflows, LLM-powered bots, Linux, cloud and security labs.",
 };
 
 export default function RootLayout({

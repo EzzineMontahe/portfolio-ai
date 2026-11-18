@@ -16,6 +16,13 @@ const SKILLS = [
   { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB" },
   { name: "Groq", icon: "https://cdn.simpleicons.org/groq/ffffff" },
   { name: "GitHub", icon: "https://cdn.simpleicons.org/github/ffffff" },
+  { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED" },
+  { name: "Kali Linux", icon: "https://cdn.simpleicons.org/kalilinux/557C94" },
+  { name: "Wireshark", icon: "https://cdn.simpleicons.org/wireshark/1679A7" },
+  { name: "Cisco", icon: "https://cdn.simpleicons.org/cisco/049fd9" },
+  { name: "Nginx", icon: "https://cdn.simpleicons.org/nginx/009639" },
+  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1" },
+  { name: "FastAPI", icon: "https://cdn.simpleicons.org/fastapi/009688" },
 ];
 
 const PROJECTS = [
@@ -23,54 +30,97 @@ const PROJECTS = [
     title: "B2B Email Automation",
     desc: "AI-powered prospecting system — automated personalized outreach using n8n + Groq + Brevo. Google Sheets as CRM, 100+ contacts, dynamic AI-generated emails in French.",
     tags: ["n8n", "Groq API", "Brevo"],
+    cat: "ai",
     badge: "Client Work",
     link: "#",
     metric: "100+ contacts automated",
   },
   {
-    title: "HubSpot Lead Automation",
-    desc: "Lead-to-deal workflow: n8n validates incoming leads, creates HubSpot contacts and deals, logs to Google Sheets and sends real-time Slack alerts. Built for 20+ leads/day, 150x faster than manual entry.",
-    tags: ["n8n", "HubSpot", "Slack", "Google Sheets"],
-    badge: "AI Automation",
-    link: "https://github.com/EzzineMontahe/hubspot-lead-automation",
-    metric: "Lead → CRM → Slack",
-  },
-  {
-    title: "Telegram AI Support Bot",
-    desc: "Support bot with conversation memory, FAQ matching, smart escalation and Google Sheets logging. Upgraded to a ReAct AI agent with live web search through Tavily MCP.",
-    tags: ["n8n", "Groq API", "Telegram", "Tavily MCP"],
-    badge: "AI Automation",
-    link: "https://github.com/EzzineMontahe/telegram-ai-support-bot",
-    metric: "ReAct AI agent",
-  },
-  {
-    title: "Lead Personalizer",
-    desc: "Python script that reads a CSV of leads, writes a personalized opener for each one with an LLM, and exports the enriched CSV.",
-    tags: ["Python", "Groq API", "CSV"],
-    badge: "AI Automation",
-    link: "https://github.com/EzzineMontahe/lead-personalizer",
-    metric: "CSV in → CSV out",
-  },
-  {
     title: "Network Alert Triage",
     desc: "Python network anomaly detection with an LLM agent that triages the alerts. Runs fully local, no hosting needed.",
     tags: ["Python", "LLM", "Anomaly Detection"],
+    cat: "net",
     badge: "In Development",
     link: "https://github.com/EzzineMontahe/network-alert-triage",
     metric: "Work in progress",
   },
   {
+    title: "HubSpot Lead Automation",
+    desc: "Lead-to-deal workflow: n8n validates incoming leads, creates HubSpot contacts and deals, logs to Google Sheets and sends real-time Slack alerts. Built for 20+ leads/day, 150x faster than manual entry.",
+    tags: ["n8n", "HubSpot", "Slack", "Google Sheets"],
+    cat: "ai",
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/hubspot-lead-automation",
+    metric: "Lead → CRM → Slack",
+  },
+  {
     title: "Home SOC Lab",
     desc: "Wazuh SIEM with an agent VM, attacks simulated with Atomic Red Team and mapped to MITRE ATT&CK, alerts routed through n8n into service-desk tickets.",
     tags: ["Wazuh", "MITRE ATT&CK", "n8n", "VirtualBox"],
+    cat: "net",
     badge: "In Development",
     link: "https://github.com/EzzineMontahe",
     metric: "Work in progress",
   },
   {
+    title: "Telegram AI Support Bot",
+    desc: "Support bot with conversation memory, FAQ matching, smart escalation and Google Sheets logging. Upgraded to a ReAct AI agent with live web search through Tavily MCP.",
+    tags: ["n8n", "Groq API", "Telegram", "Tavily MCP"],
+    cat: "ai",
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/telegram-ai-support-bot",
+    metric: "ReAct AI agent",
+  },
+  {
+    title: "OpenStack Private Cloud Lab",
+    desc: "Single-node private cloud on DevStack (Keystone, Nova, Neutron/OVN, Glance, Horizon) with an isolated network, router and instance, plus 11 documented troubleshooting fixes.",
+    tags: ["OpenStack", "DevStack", "VirtualBox", "Linux"],
+    cat: "net",
+    badge: "Cloud",
+    link: "https://github.com/EzzineMontahe/openstack-private-cloud-lab",
+    metric: "Private cloud lab",
+  },
+  {
+    title: "Vuln Triage Pipeline",
+    desc: "Python pipeline: nmap scan → XML parser → NVD API CVE lookup → Markdown/JSON report. Tested against Metasploitable 2.",
+    tags: ["Python", "nmap", "NVD API"],
+    cat: "net",
+    badge: "Security",
+    link: "https://github.com/EzzineMontahe/vuln-triage-pipeline",
+    metric: "nmap → NVD → report",
+  },
+  {
+    title: "Lead Personalizer",
+    desc: "Python script that reads a CSV of leads, writes a personalized opener for each one with an LLM, and exports the enriched CSV.",
+    tags: ["Python", "Groq API", "CSV"],
+    cat: "ai",
+    badge: "AI Automation",
+    link: "https://github.com/EzzineMontahe/lead-personalizer",
+    metric: "CSV in → CSV out",
+  },
+  {
+    title: "Exam Monitoring System",
+    desc: "Real-time exam supervision: FastAPI backend with WebSockets, a C# WinForms client and a live HTML/JS dashboard, backed by PostgreSQL.",
+    tags: ["FastAPI", "C#", "PostgreSQL", "WebSocket"],
+    cat: "dev",
+    badge: "Full Stack",
+    link: "https://github.com/EzzineMontahe/exam-monitor-system",
+    metric: "Real-time dashboard",
+  },
+  {
+    title: "Linux Security Lab",
+    desc: "Ubuntu server hardening with SSH configuration, firewall rules, and automated Trivy vulnerability scanning with Jira reporting.",
+    tags: ["Linux", "Bash", "Security"],
+    cat: "net",
+    badge: "Security",
+    link: "https://github.com/EzzineMontahe",
+    metric: "Hardened server",
+  },
+  {
     title: "Home AI Assistant",
     desc: "Personal Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support (/study /translate /cook /clear). Fully multilingual: EN, FR, AR.",
     tags: ["n8n", "Groq API", "Telegram"],
+    cat: "ai",
     badge: "AI Automation",
     link: "https://github.com/EzzineMontahe/home-ai-assistant",
     metric: "3 languages supported",
@@ -79,55 +129,27 @@ const PROJECTS = [
     title: "Portfolio AI",
     desc: "This site — Next.js portfolio with an embedded AI assistant that answers questions about my work and logs conversations to Google Sheets.",
     tags: ["Next.js", "Groq API", "Vercel"],
+    cat: "ai",
     badge: "AI + Web",
     link: "https://github.com/EzzineMontahe/portfolio-ai",
     metric: "Live AI chat",
   },
   {
-    title: "Vuln Triage Pipeline",
-    desc: "Python pipeline: nmap scan → XML parser → NVD API CVE lookup → Markdown/JSON report. Tested against Metasploitable 2.",
-    tags: ["Python", "nmap", "NVD API"],
-    badge: "Security",
-    link: "https://github.com/EzzineMontahe/vuln-triage-pipeline",
-    metric: "nmap → NVD → report",
-  },
-  {
-    title: "OpenStack Private Cloud Lab",
-    desc: "Single-node private cloud on DevStack (Keystone, Nova, Neutron/OVN, Glance, Horizon) with an isolated network, router and instance, plus 11 documented troubleshooting fixes.",
-    tags: ["OpenStack", "DevStack", "VirtualBox", "Linux"],
-    badge: "Cloud",
-    link: "https://github.com/EzzineMontahe/openstack-private-cloud-lab",
-    metric: "Private cloud lab",
-  },
-  {
-    title: "Exam Monitoring System",
-    desc: "Real-time exam supervision: FastAPI backend with WebSockets, a C# WinForms client and a live HTML/JS dashboard, backed by PostgreSQL.",
-    tags: ["FastAPI", "C#", "PostgreSQL", "WebSocket"],
-    badge: "Full Stack",
-    link: "https://github.com/EzzineMontahe/exam-monitor-system",
-    metric: "Real-time dashboard",
-  },
-  {
     title: "Student Grade Tracker",
     desc: "Full-stack CRUD web app with student dashboard, grade calculations, and averages. Spring Boot + Thymeleaf + MySQL.",
     tags: ["Spring Boot", "MySQL", "Java"],
+    cat: "dev",
     badge: "Full Stack",
     link: "https://github.com/EzzineMontahe/student-grade-tracker",
     metric: "Full-stack app",
   },
-  {
-    title: "Linux Security Lab",
-    desc: "Ubuntu server hardening with SSH configuration, firewall rules, and automated Trivy vulnerability scanning with Jira reporting.",
-    tags: ["Linux", "Bash", "Security"],
-    badge: "Security",
-    link: "https://github.com/EzzineMontahe",
-    metric: "Hardened server",
-  },
 ];
+
 
 export default function Home() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     const handleMouse = (e: MouseEvent) => {
@@ -418,6 +440,16 @@ export default function Home() {
         }
         .btn-primary:hover { background:var(--sage-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(107,143,110,0.3); }
 
+        .filter-row { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
+        .filter-chip {
+          font-family:'Chakra Petch',sans-serif; font-size:0.75rem; font-weight:600;
+          letter-spacing:0.08em; text-transform:uppercase;
+          padding:0.55rem 1.1rem; border-radius:4px; cursor:pointer;
+          background:transparent; color:var(--text-muted);
+          border:1px solid var(--border); transition:all 0.2s ease;
+        }
+        .filter-chip:hover { color:#fff; border-color:rgba(107,143,110,0.4); }
+        .filter-chip.active { background:var(--sage); border-color:var(--sage); color:#fff; }
         .btn-secondary {
           font-family:'Chakra Petch',sans-serif;
           font-size:0.8rem; font-weight:500;
@@ -657,19 +689,19 @@ export default function Home() {
         <div className="hero-inner">
           <div className="hero-badge fade-up d1">
             <span className="hero-dot" />
-            Available for freelance · Tunisia
+            Open to PFE · Alternance · Freelance · Tunisia
           </div>
 
           <h1 className="hero-title fade-up d2">
             I build <span className="outline">AI</span><br />
-            automations<br />
-            that work<span style={{ color: "var(--sage)" }}>.</span>
+            automations &<br />
+            secure networks<span style={{ color: "var(--sage)" }}>.</span>
             <span className="cursor-blink" />
           </h1>
 
           <p className="hero-sub fade-up d3">
-            Montahe Ezzine — n8n workflows, LLM-powered bots,
-            and API integrations built to solve real problems fast.
+            Montahe Ezzine — Network &amp; Systems Engineering student.
+            LLM-powered automations on one side, Linux, cloud and security labs on the other.
           </p>
 
           <div className="hero-buttons fade-up d4">
@@ -721,7 +753,7 @@ export default function Home() {
             borderTop: "1px solid var(--border)", paddingTop: "2.5rem",
             flexWrap: "wrap"
           }}>
-            {[["10+", "Projects Built"], ["n8n + LLMs", "Core Stack"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
+            {[["10+", "Projects Built"], ["AI · Cloud · Security", "Focus"], ["AR·FR·EN", "Languages"], ["Open", "For Work"]].map(([val, label]) => (
               <div key={label} style={{ textAlign: "center" }}>
                 <div className="chakra" style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>{val}</div>
                 <div className="chakra" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-muted)" }}>{label}</div>
@@ -758,9 +790,18 @@ export default function Home() {
             }}>View all on GitHub ↗</a>
           </div>
 
+          <div className="filter-row">
+            {[["all", "All"], ["ai", "AI & Automation"], ["net", "Networks, Cloud & Security"], ["dev", "Software"]].map(([k, label]) => (
+              <button key={k} className={`filter-chip${filter === k ? " active" : ""}`} onClick={() => setFilter(k)}>
+                {label}
+              </button>
+            ))}
+          </div>
+
           <div className="projects-grid">
             {PROJECTS.map((p, i) => (
               <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer"
+                style={{ display: filter === "all" || filter === p.cat ? undefined : "none" }}
                 className={`project-card reveal reveal-delay-${(i % 4) + 1}`}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
                   <span className="project-badge">{p.badge}</span>
@@ -845,12 +886,13 @@ export default function Home() {
           <p className="section-label reveal">Contact</p>
           <h2 className="section-title reveal">Let's work together</h2>
           <p className="reveal" style={{ color: "var(--text-muted)", fontSize: "1rem", marginBottom: "3rem", lineHeight: 1.7 }}>
-            Open to freelance projects, automations, and collaborations.
+            Open to PFE and internship opportunities, alternance, freelance projects and collaborations.
           </p>
-          <div className="contact-grid reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+          <div className="contact-grid reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
             {[
               { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
               { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
+              { label: "GitHub", sub: "Code, labs and write-ups", href: "https://github.com/EzzineMontahe" },
               { label: "Email", sub: "ezzinemontahe@gmail.com", href: "mailto:ezzinemontahe@gmail.com" },
             ].map(c => (
               <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="contact-card">
