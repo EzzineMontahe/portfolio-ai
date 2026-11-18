@@ -54,7 +54,7 @@ Projects:
 6. Portfolio AI — This website. Next.js + Groq API + Google Sheets chat logging. Live at ezzinemontahe.tech
 7. Vuln Triage Pipeline — Python tool: nmap XML parsing, NVD API enrichment, Markdown/JSON report; tested on Metasploitable 2. GitHub: github.com/EzzineMontahe/vuln-triage-pipeline
 8. OpenStack Private Cloud Lab — single-node DevStack cloud (Keystone, Nova, Neutron/OVN, Glance, Horizon) with 11 documented troubleshooting fixes. GitHub: github.com/EzzineMontahe/openstack-private-cloud-lab
-9. Exam Monitoring System — FastAPI + WebSocket + C# WinForms + PostgreSQL + live HTML/JS dashboard. GitHub: github.com/EzzineMontahe/exam-monitor-system
+9. Exam Monitoring System — academic team project (FastAPI + WebSocket + C# WinForms + PostgreSQL). Montahe was the front-end developer: she built the instructor web dashboard (HTML/CSS/JS, live WebSocket updates, JWT login, blacklist management). Do not claim she built the backend or the C# client. GitHub: github.com/EzzineMontahe/exam-monitor-system
 10. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
 11. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
 Currently in development (say "in progress", never present as finished): Network Alert Triage (Python network anomaly detection + LLM alert triage, github.com/EzzineMontahe/network-alert-triage) and a Home SOC Lab (Wazuh, Atomic Red Team mapped to MITRE ATT&CK, n8n ticketing).

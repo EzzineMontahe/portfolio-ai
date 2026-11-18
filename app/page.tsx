@@ -109,12 +109,12 @@ const PROJECTS = [
   },
   {
     title: "Exam Monitoring System",
-    desc: "Real-time exam supervision: FastAPI backend with WebSockets, a C# WinForms client and a live HTML/JS dashboard, backed by PostgreSQL.",
-    tags: ["FastAPI", "C#", "PostgreSQL", "WebSocket"],
+    desc: "Academic team project: real-time exam supervision (FastAPI, WebSocket, C# client, PostgreSQL). My part: the instructor dashboard in HTML/CSS/JS with live WebSocket updates, JWT login and blacklist management.",
+    tags: ["JavaScript", "WebSocket", "JWT", "FastAPI"],
     cat: "dev",
     badge: "Full Stack",
     link: "https://github.com/EzzineMontahe/exam-monitor-system",
-    metric: "Real-time dashboard",
+    metric: "Team project · front-end"
   },
   {
     title: "Linux Security Lab",
