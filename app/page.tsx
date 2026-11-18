@@ -64,7 +64,7 @@ const PROJECTS = [
   },
   {
     title: "Telegram AI Support Bot",
-    desc: "Support bot with conversation memory, FAQ matching, smart escalation and Google Sheets logging. Upgraded to a ReAct AI agent with live web search through Tavily MCP.",
+    desc: "Support bot with conversation memory, FAQ matching, smart escalation and Google Sheets logging. Upgraded to a ReAct AI agent with live web search through Tavily MCP. Self-hosted on AWS EC2 with Nginx, SSL and PM2.",
     tags: ["n8n", "Groq API", "Telegram", "Tavily MCP"],
     cat: "ai",
     badge: "AI Automation",
@@ -79,6 +79,15 @@ const PROJECTS = [
     badge: "Cloud",
     link: "https://github.com/EzzineMontahe/openstack-private-cloud-lab",
     metric: "Private cloud lab",
+  },
+  {
+    title: "n8n Cloud Migration",
+    desc: "Moved a self-hosted n8n stack from DigitalOcean to Azure to AWS EC2 (Ubuntu 24.04, t3.micro): Nginx with Let's Encrypt SSL, PM2, Elastic IP, swap and EBS tuning, DNS and webhook fixes so the Telegram bots kept working.",
+    tags: ["AWS EC2", "Nginx", "Linux", "DNS"],
+    cat: "net",
+    badge: "Cloud",
+    link: "#",
+    metric: "DO → Azure → AWS",
   },
   {
     title: "Vuln Triage Pipeline",
@@ -704,7 +713,7 @@ export default function Home() {
             LLM-powered automations on one side, Linux, cloud and security labs on the other.
           </p>
 
-          <div className="hero-buttons fade-up d4">
+          <div className="hero-buttons fade-up d4" style={{ position: "relative", zIndex: 20 }}>
   <a href="#contact" className="btn-primary" style={{ textDecoration: "none" }}>
     Get in touch ↓
   </a>
@@ -749,6 +758,7 @@ export default function Home() {
 
           {/* Mini stats */}
           <div className="fade-up d5" style={{
+            position: "relative", zIndex: 1,
             display: "flex", gap: "3rem", justifyContent: "center",
             borderTop: "1px solid var(--border)", paddingTop: "2.5rem",
             flexWrap: "wrap"
@@ -800,7 +810,7 @@ export default function Home() {
 
           <div className="projects-grid">
             {PROJECTS.map((p, i) => (
-              <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer"
+              <a key={p.title} href={p.link === "#" ? undefined : p.link} target={p.link === "#" ? undefined : "_blank"} rel="noopener noreferrer"
                 style={{ display: filter === "all" || filter === p.cat ? undefined : "none" }}
                 className={`project-card reveal reveal-delay-${(i % 4) + 1}`}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
@@ -870,7 +880,7 @@ export default function Home() {
                 Montahe's AI Assistant
               </span>
               <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginLeft: "auto" }}>
-                Powered by Groq · LLaMA 3.3 70B
+                Powered by Groq · gpt-oss 120B
               </span>
             </div>
             <div style={{ padding: "1.5rem" }}>
@@ -891,7 +901,7 @@ export default function Home() {
           <div className="contact-grid reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
             {[
               { label: "Upwork", sub: "Hire me directly", href: "https://www.upwork.com/freelancers/~01be288743c2f0f1e9" },
-              { label: "LinkedIn", sub: "Connect professionally", href: "https://linkedin.com/in/montahe-ezzine-baa6b1297" },
+              { label: "LinkedIn", sub: "Connect professionally", href: "https://www.linkedin.com/in/mentaha-ezzine-baa6b1297/" },
               { label: "GitHub", sub: "Code, labs and write-ups", href: "https://github.com/EzzineMontahe" },
               { label: "Email", sub: "ezzinemontahe@gmail.com", href: "mailto:ezzinemontahe@gmail.com" },
             ].map(c => (
@@ -904,6 +914,12 @@ export default function Home() {
               </a>
             ))}
           </div>
+          <p className="reveal" style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "1.5rem" }}>
+            For PFE, internship and academic inquiries:{" "}
+            <a href="mailto:mentaha.ezzine@etudiant-isi.utm.tn" style={{ color: "var(--sage-light)", textDecoration: "none" }}>
+              mentaha.ezzine@etudiant-isi.utm.tn
+            </a>
+          </p>
         </div>
       </section>
 

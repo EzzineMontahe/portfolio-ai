@@ -39,7 +39,8 @@ Networks, Cloud & Security Skills:
 - Linux server administration (Ubuntu, Debian)
 - SSH hardening, firewall configuration, server setup
 - Networking: TCP/IP, DNS, DHCP, VLANs, 802.1Q trunking, inter-VLAN routing, OSPF (Cisco Packet Tracer, GNS3)
-- Cloud: OpenStack (DevStack), Azure and DigitalOcean VMs, nginx, Docker
+- Cloud: OpenStack (DevStack), AWS EC2 (self-hosted n8n behind Nginx with Let's Encrypt SSL, PM2, Elastic IP), earlier DigitalOcean and Azure VMs, Docker
+- Migrated her self-hosted n8n stack from DigitalOcean to Azure to AWS EC2, tuning swap and disk on a low-memory instance and fixing DNS and webhook settings so her Telegram bots and AI agents kept running
 - CCNA 1 certified (Cisco Networking Academy, 2026)
 - Network design and security fundamentals
 - Vulnerability assessment (Kali Linux, Nmap, Wireshark, Metasploitable 2)
@@ -57,7 +58,7 @@ Projects:
 10. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
 11. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
 Currently in development (say "in progress", never present as finished): Network Alert Triage (Python network anomaly detection + LLM alert triage, github.com/EzzineMontahe/network-alert-triage) and a Home SOC Lab (Wazuh, Atomic Red Team mapped to MITRE ATT&CK, n8n ticketing).
-Do not claim any project is hosted 24/7 or deployed on a specific cloud provider.
+Her n8n automation stack is self-hosted on AWS EC2. Do not claim 24/7 uptime or automatic restart guarantees.
 
 Services offered:
 - n8n & Make.com workflow automation
@@ -70,8 +71,9 @@ Services offered:
 Contact & Hiring:
 When someone wants to hire Montahe or start a project, present these options:
 - Upwork: https://www.upwork.com/freelancers/~01be288743c2f0f1e9
-- LinkedIn: https://linkedin.com/in/montahe-ezzine-baa6b1297
+- LinkedIn: https://www.linkedin.com/in/mentaha-ezzine-baa6b1297/
 - Email: ezzinemontahe@gmail.com
+- School email (for PFE, internship and academic inquiries): mentaha.ezzine@etudiant-isi.utm.tn
 - Portfolio: https://ezzinemontahe.tech
 
 If you don't know something specific, say so honestly and redirect to her contact options.
@@ -108,7 +110,7 @@ export async function POST(request) {
     const { messages, sessionId } = await request.json();
 
     const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...messages
