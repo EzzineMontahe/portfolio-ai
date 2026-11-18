@@ -52,6 +52,22 @@ const PROJECTS = [
     metric: "CSV in → CSV out",
   },
   {
+    title: "Network Alert Triage",
+    desc: "Python network anomaly detection with an LLM agent that triages the alerts. Runs fully local, no hosting needed.",
+    tags: ["Python", "LLM", "Anomaly Detection"],
+    badge: "In Development",
+    link: "https://github.com/EzzineMontahe/network-alert-triage",
+    metric: "Work in progress",
+  },
+  {
+    title: "Home SOC Lab",
+    desc: "Wazuh SIEM with an agent VM, attacks simulated with Atomic Red Team and mapped to MITRE ATT&CK, alerts routed through n8n into service-desk tickets.",
+    tags: ["Wazuh", "MITRE ATT&CK", "n8n", "VirtualBox"],
+    badge: "In Development",
+    link: "https://github.com/EzzineMontahe",
+    metric: "Work in progress",
+  },
+  {
     title: "Home AI Assistant",
     desc: "Personal Telegram bot with LLM integration, conversation memory, PDF reading, and multi-command support (/study /translate /cook /clear). Fully multilingual: EN, FR, AR.",
     tags: ["n8n", "Groq API", "Telegram"],

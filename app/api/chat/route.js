@@ -52,7 +52,7 @@ Projects:
 9. Exam Monitoring System — FastAPI + WebSocket + C# WinForms + PostgreSQL + live HTML/JS dashboard. GitHub: github.com/EzzineMontahe/exam-monitor-system
 10. Student Grade Tracker — Spring Boot + MySQL full-stack app. GitHub: github.com/EzzineMontahe/student-grade-tracker
 11. Linux Security Lab — Ubuntu server hardening, Trivy scanning, Jira reporting.
-Currently working on (not finished, don't present as done): a Wazuh home SOC lab and a network alert-triage project.
+Currently in development (say "in progress", never present as finished): Network Alert Triage (Python network anomaly detection + LLM alert triage, github.com/EzzineMontahe/network-alert-triage) and a Home SOC Lab (Wazuh, Atomic Red Team mapped to MITRE ATT&CK, n8n ticketing).
 Do not claim any project is hosted 24/7 or deployed on a specific cloud provider.
 
 Services offered:
