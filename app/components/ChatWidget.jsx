@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function ChatWidget({ inline = false }) {
   const [open, setOpen] = useState(inline);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hey! I'm Montahe's AI assistant. Ask me anything about her work, skills, or availability 👋" }
+    { role: "assistant", content: "Hey! I'm Mentaha's AI assistant. Ask me anything about her work, skills, or availability 👋" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export default function ChatWidget({ inline = false }) {
           display: "flex", justifyContent: "space-between", alignItems: "center"
         }}>
           <div>
-            <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff", margin: 0 }}>Montahe's Assistant</p>
+            <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff", margin: 0 }}>Mentaha's Assistant</p>
             <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)", margin: 0 }}>Ask me anything</p>
           </div>
           <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: "1rem" }}>✕</button>

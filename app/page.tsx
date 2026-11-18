@@ -46,7 +46,7 @@ const PROJECTS = [
   },
   {
     title: "HubSpot Lead Automation",
-    desc: "Lead-to-deal workflow: n8n validates incoming leads, creates HubSpot contacts and deals, logs to Google Sheets and sends real-time Slack alerts. Built for 20+ leads/day, 150x faster than manual entry.",
+    desc: "Portfolio project: n8n validates incoming leads from a webhook, creates HubSpot contacts and deals, logs to Google Sheets and sends Slack alerts. Tested end-to-end.",
     tags: ["n8n", "HubSpot", "Slack", "Google Sheets"],
     cat: "ai",
     badge: "AI Automation",
@@ -709,7 +709,7 @@ export default function Home() {
           </h1>
 
           <p className="hero-sub fade-up d3">
-            Montahe Ezzine — Network &amp; Systems Engineering student.
+            Mentaha Ezzine — Network &amp; Systems Engineering student.
             LLM-powered automations on one side, Linux, cloud and security labs on the other.
           </p>
 
@@ -877,7 +877,7 @@ export default function Home() {
             <div className="chat-header">
               <div style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--sage)", animation: "pulse-glow 2s infinite" }} />
               <span className="chakra" style={{ fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.06em", color: "#fff" }}>
-                Montahe's AI Assistant
+                Mentaha's AI Assistant
               </span>
               <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginLeft: "auto" }}>
                 Powered by Groq · gpt-oss 120B
@@ -929,7 +929,7 @@ export default function Home() {
           ME<span style={{ color: "var(--sage)" }}>.</span>
         </span>
         <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.2)" }}>
-          © 2026 Montahe Ezzine · Built with Next.js + Groq AI
+          © 2026 Mentaha Ezzine · Built with Next.js + Groq AI
         </span>
       </footer>
 
